@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Employee } from '../types';
-import { DEFAULT_PROFILE_PIC, ViewIcon, EditIcon, ArchiveIcon, UnarchiveIcon, DocumentsIcon, QrCodeIcon, AiSparklesIcon } from '../constants';
+import { DEFAULT_PROFILE_PIC, ViewIcon, EditIcon, ArchiveIcon, UnarchiveIcon, DocumentsIcon, QrCodeIcon } from '../constants';
 
 interface EmployeeCardProps {
   employee: Employee;
@@ -10,7 +10,6 @@ interface EmployeeCardProps {
   onArchiveToggle: (employee: Employee) => void;
   onDocuments: (employee: Employee) => void;
   onQrCode: (employee: Employee) => void;
-  onAskAi: (employee: Employee) => void; 
 }
 
 const EmployeeCard: React.FC<EmployeeCardProps> = ({
@@ -20,7 +19,6 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({
   onArchiveToggle,
   onDocuments,
   onQrCode,
-  onAskAi,
 }) => {
   const tenure = (startDate: string): string => {
     if (!startDate) return 'N/A';
@@ -85,7 +83,6 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({
           { action: () => onArchiveToggle(employee), Icon: employee.isArchived ? UnarchiveIcon : ArchiveIcon, title: employee.isArchived ? "Unarchive" : "Archive", colorClass: employee.isArchived ? "hover:text-yellow-500" : "hover:text-red-500" },
           { action: () => onDocuments(employee), Icon: DocumentsIcon, title: "Documents", colorClass: "hover:text-brand-accent" },
           { action: () => onQrCode(employee), Icon: QrCodeIcon, title: "QR Code", colorClass: "hover:text-purple-500" },
-          { action: () => onAskAi(employee), Icon: AiSparklesIcon, title: "Ask AI Assistant", colorClass: "hover:text-teal-500" },
         ].map(({action, Icon, title, colorClass}) => (
             <button
                 key={title}

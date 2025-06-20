@@ -6,7 +6,6 @@ This contains everything you need to run your app locally.
 
 - Node.js
 - A Supabase project (create one at [supabase.com](https://supabase.com))
-- A Gemini API key (get one from [Google AI Studio](https://makersuite.google.com/app/apikey))
 
 ## Run Locally
 
@@ -21,10 +20,7 @@ This contains everything you need to run your app locally.
    - Copy your Project URL and anon/public key
    - Update the `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in [.env.local](.env.local)
 
-3. **Configure Gemini AI:**
-   - Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-
-4. **Run the app:**
+3. **Run the app:**
    ```bash
    npm run dev
    ```

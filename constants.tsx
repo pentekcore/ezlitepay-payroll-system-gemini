@@ -94,12 +94,6 @@ export const DownloadIcon = () => (
   </svg>
 );
 
-export const AiSparklesIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.25 12L17 13.75l-1.25-1.75L13.75 12l1.75-1.25L17 8.75l1.25 1.75L20.25 12l-1.75 1.25z" />
-  </svg>
-);
-
 export const DEFAULT_PROFILE_PIC = "https://avatar.iran.liara.run/public/boy?username=Guest"; // More modern placeholder
 export const APP_LOGO_URL = "https://i.ibb.co/DfgN4YBh/EZLite-Pay-PNG.png"; 
 // A better logo source would be an actual SVG file or a well-optimized image.

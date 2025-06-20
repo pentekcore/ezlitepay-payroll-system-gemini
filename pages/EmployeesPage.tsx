@@ -4,7 +4,6 @@ import EmployeeCard from '../components/EmployeeCard';
 import AddEditEmployeeModal from '../components/AddEditEmployeeModal';
 import DocumentManagementModal from '../components/DocumentManagementModal';
 import QrCodeModal from '../components/QrCodeModal';
-import AiAssistantModal from '../components/AiAssistantModal'; // Added AI Assistant Modal
 import { Employee, AppSettings, ModalMode } from '../types';
 import { AddIcon } from '../constants';
 import { getEmployees, getAppSettings, archiveEmployee, unarchiveEmployee } from '../services/supabaseService';
@@ -27,10 +26,6 @@ const EmployeesPage: React.FC = () => {
   const [isDocModalOpen, setIsDocModalOpen] = useState(false);
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const [selectedEmployeeForModal, setSelectedEmployeeForModal] = useState<Employee | null>(null);
-
-  // State for AI Assistant Modal
-  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
-  const [selectedEmployeeForAi, setSelectedEmployeeForAi] = useState<Employee | null>(null);
 
 
   const fetchInitialData = useCallback(async () => {
@@ -122,11 +117,6 @@ const EmployeesPage: React.FC = () => {
     setIsQrModalOpen(true);
   };
 
-  const handleOpenAiModal = (employee: Employee) => {
-    setSelectedEmployeeForAi(employee);
-    setIsAiModalOpen(true);
-  };
-  
   const handleSaveEmployee = async (savedEmployee: Employee, mode: ModalMode) => {
       console.log(`${mode === ModalMode.ADD ? 'Added' : 'Updated'} employee:`, savedEmployee);
       await fetchInitialData(); 
@@ -245,7 +235,6 @@ const EmployeesPage: React.FC = () => {
             onArchiveToggle={handleArchiveToggle}
             onDocuments={handleOpenDocumentsModal}
             onQrCode={handleOpenQrCodeModal}
-            onAskAi={handleOpenAiModal}
           />
         ))}
       </div>
@@ -272,13 +261,6 @@ const EmployeesPage: React.FC = () => {
           isOpen={isQrModalOpen}
           onClose={() => setIsQrModalOpen(false)}
           employee={selectedEmployeeForModal}
-        />
-      )}
-      {isAiModalOpen && selectedEmployeeForAi && (
-        <AiAssistantModal
-          isOpen={isAiModalOpen}
-          onClose={() => setIsAiModalOpen(false)}
-          employee={selectedEmployeeForAi}
         />
       )}
     </div>
