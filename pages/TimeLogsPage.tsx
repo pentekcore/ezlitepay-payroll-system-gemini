@@ -140,8 +140,7 @@ const TimeLogsPage: React.FC = () => {
           className="btn btn-secondary"
           aria-label="Add Manual Time Log"
         >
-           <AddIcon />
-           <span className="ml-2">Add Manual Log</span>
+           Add Manual Log
         </button>
       </div>
 

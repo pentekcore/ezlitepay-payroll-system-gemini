@@ -326,7 +326,7 @@ const SettingsPage: React.FC = () => {
       <p className="text-slate-600">This section will allow management of system administrators. Features include adding new admins, editing roles/permissions, and deactivating admin accounts.</p>
       <p className="text-slate-500 text-sm mt-2"> (Placeholder: Full implementation of user management with Firebase Auth (creating users) and Firestore (storing roles) will be added later. This often involves Cloud Functions for secure user creation.)</p>
       <div className="mt-6">
-        <button className="btn btn-secondary" disabled>Add New Admin (Coming Soon)</button>
+        <button className="btn btn-secondary" disabled>Add Admin (Coming Soon)</button>
       </div>
       <div className="mt-6 border border-dashed border-slate-300 rounded-lg p-10 text-center text-slate-400">
         <p>Admin user list will appear here.</p>

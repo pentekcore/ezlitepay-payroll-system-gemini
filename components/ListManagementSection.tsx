@@ -71,9 +71,7 @@ export const ListManagementSection: React.FC<ListManagementSectionProps> = ({
           className="btn btn-secondary flex-shrink-0"
           type="button" // Ensure it doesn't submit parent form if nested
         >
-           <AddIcon />
-           <span className="ml-2 hidden sm:inline">Add</span>
-           <span className="sm:hidden">Add</span> {/* Text for smaller screens */}
+           Add
         </button>
       </div>
       {isLoading && <p className="text-sm text-slate-500 py-3 text-center">Loading {title.toLowerCase()}...</p>}

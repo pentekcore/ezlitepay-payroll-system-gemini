@@ -401,7 +401,7 @@ const SchedulePage: React.FC = () => {
                 disabled={isSubmitting || isLoading}
                 aria-label="Add Bulk Schedules"
             >
-                <span className="ml-0">Add Bulk</span>
+                Add Bulk
             </button>
             <button
                 type="button"
@@ -410,7 +410,7 @@ const SchedulePage: React.FC = () => {
                 disabled={isSubmitting || isLoading}
                 aria-label="Add Single Schedule"
             >
-                <span className="ml-0">Add Single</span>
+                Add Single
             </button>
         </div>
       </div>
