@@ -13,7 +13,7 @@ interface ListManagementSectionProps {
 
 export const ListManagementSection: React.FC<ListManagementSectionProps> = ({
   title,
-  items,
+  items = [],
   onAddItem,
   onRemoveItem,
   isLoading = false,
