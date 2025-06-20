@@ -11,8 +11,6 @@
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react/jsx-runtime": "^19.1.0",
-    "react/jsx-dev-runtime": "^19.1.0",
     "react-router-dom": "^7.6.2",
     "qr-code-styling": "^1.9.2",
     "@google/genai": "google",
