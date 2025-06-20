@@ -279,10 +279,10 @@ const AddEditEmployeeModal: React.FC<AddEditEmployeeModalProps> = ({ isOpen, onC
               {renderField("Gender", "gender", "select", ["Male", "Female", "Other"], true)}
               {renderField("Birth Date", "birthDate", "date", [], true)}
               {renderField("Start Date", "startDate", "date", [], true)}
-              {renderField("Position", "position", "select", appSettings?.positions, true)}
-              {renderField("Department", "department", "select", appSettings?.departments, true)}
-              {renderField("Employee Type", "employeeType", "select", appSettings?.employeeTypes, true)}
-              {renderField("Status", "status", "select", appSettings?.statuses, true)}
+              {renderField("Position", "position", "select", appSettings?.positions || [], true)}
+              {renderField("Department", "department", "select", appSettings?.departments || [], true)}
+              {renderField("Employee Type", "employeeType", "select", appSettings?.employeeTypes || [], true)}
+              {renderField("Status", "status", "select", appSettings?.statuses || [], true)}
             </>
           ), "md:grid-cols-3")}
 

@@ -211,7 +211,7 @@ const EmployeesPage: React.FC = () => {
                 className="input-base w-full bg-white"
                 >
                 <option value="">All Departments</option>
-                {appSettings?.departments.map(dept => <option key={dept} value={dept}>{dept}</option>)}
+                {(appSettings?.departments || []).map(dept => <option key={dept} value={dept}>{dept}</option>)}
                 </select>
             </div>
             <button
