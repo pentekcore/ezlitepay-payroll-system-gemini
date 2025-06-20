@@ -177,11 +177,11 @@ export const unarchiveEmployee = async (employeeId: string): Promise<void> => {
 export const getAppSettings = async (): Promise<AppSettings> => {
   console.log("Supabase: Fetching app settings");
   const defaultSettings: AppSettings = {
-    departments: ['Default Department'],
-    positions: ['Default Position'],
-    employeeTypes: ['Full-time'],
-    statuses: ['Active'],
-    documentTypes: ['General']
+    departments: ['Human Resources', 'Information Technology', 'Finance', 'Operations', 'Marketing'],
+    positions: ['Manager', 'Developer', 'Analyst', 'Coordinator', 'Specialist'],
+    employeeTypes: ['Regular', 'Contractual', 'Part-time', 'Probationary'],
+    statuses: ['Active', 'Resigned', 'Terminated', 'On Leave'],
+    documentTypes: ['Resume', 'Contract', 'ID Copy', 'Certificate', 'Other']
   };
 
   try {
@@ -197,7 +197,14 @@ export const getAppSettings = async (): Promise<AppSettings> => {
       // Initialize default settings
       const { error: insertError } = await supabase
         .from('app_settings')
-        .insert({ key: 'main_config', value: defaultSettings });
+        .insert({ 
+          key: 'main_config', 
+          category: 'system',
+          value: defaultSettings,
+          label: 'Main Application Configuration',
+          is_active: true,
+          sort_order: 1
+        });
       
       if (insertError) throw insertError;
       return defaultSettings;
@@ -215,7 +222,14 @@ export const updateAppSettings = async (settingsData: AppSettings): Promise<AppS
   try {
     const { error } = await supabase
       .from('app_settings')
-      .upsert({ key: 'main_config', value: settingsData });
+      .upsert({ 
+        key: 'main_config', 
+        category: 'system',
+        value: settingsData,
+        label: 'Main Application Configuration',
+        is_active: true,
+        sort_order: 1
+      });
 
     if (error) throw error;
     return settingsData;
@@ -348,7 +362,14 @@ export const getCompanyInfo = async (): Promise<{ name: string; address: string;
     if (!data) {
       const { error: insertError } = await supabase
         .from('app_settings')
-        .insert({ key: 'company_info', value: defaultInfo });
+        .insert({ 
+          key: 'company_info', 
+          category: 'system',
+          value: defaultInfo,
+          label: 'Company Information',
+          is_active: true,
+          sort_order: 2
+        });
       
       if (insertError) throw insertError;
       return defaultInfo;
@@ -366,7 +387,14 @@ export const updateCompanyInfo = async (info: { name: string; address: string; l
   try {
     const { error } = await supabase
       .from('app_settings')
-      .upsert({ key: 'company_info', value: info });
+      .upsert({ 
+        key: 'company_info', 
+        category: 'system',
+        value: info,
+        label: 'Company Information',
+        is_active: true,
+        sort_order: 2
+      });
 
     if (error) throw error;
   } catch (error) {
