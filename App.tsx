@@ -15,10 +15,6 @@ import ReportsPage from './pages/ReportsPage';
 import { ROUTES, BRAND_COLORS } from './constants';
 import { useAuth } from './hooks/useAuth';
 
-// Firebase Initialization Guidance (To be placed in firebaseService.ts or a similar file)
-// ... (Firebase guidance remains the same)
-
-
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { user, loading } = useAuth(); // Using mock auth for now

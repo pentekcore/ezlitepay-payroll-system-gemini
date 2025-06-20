@@ -3,7 +3,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Modal } from './Modal';
 import { Employee, EmployeeDocument, AppSettings } from '../types';
 import { UploadIcon, DownloadIcon, ViewIcon, DeleteIcon } from '../constants';
-import { getEmployeeDocuments, uploadEmployeeDocument, addDocumentMetadata, deleteEmployeeDocument, getAppSettings } from '../services/firebaseService';
+import { getEmployeeDocuments, uploadEmployeeDocument, addDocumentMetadata, deleteEmployeeDocument, getAppSettings } from '../services/supabaseService';
 
 interface DocumentManagementModalProps {
   isOpen: boolean;

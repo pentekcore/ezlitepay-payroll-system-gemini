@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { APP_NAME, APP_LOGO_URL } from '../constants';
 import { Employee } from '../types';
-import { getEmployees, getCompanyInfo } from '../services/firebaseService'; // To get employee names and company info
+import { getEmployees, getCompanyInfo } from '../services/supabaseService';
 
 const MAX_BREAKS = 2;
 const MAX_LUNCHES = 1; // Per clock-in session

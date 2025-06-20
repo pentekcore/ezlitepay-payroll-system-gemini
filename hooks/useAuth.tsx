@@ -1,14 +1,7 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-// Corrected and consolidated Firebase Auth imports for v9
-import type { User as FirebaseUserType } from 'firebase/auth'; // Explicit type import
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut
-} from 'firebase/auth'; // Value imports
-import { auth, db } from '../firebase'; // Import auth and db from your firebase.ts
-import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore'; // Import Timestamp
-import { User } from '../types'; // Your app's User type
+import { supabase } from '../supabase';
+import { User as SupabaseUser, Session } from '@supabase/supabase-js';
+import { User } from '../types';
 
 interface AuthContextType {
   user: User | null;
@@ -23,46 +16,21 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // Default admin email for initial admin user creation if needed
 const ADMIN_EMAIL = 'admin@ezlitepay.com';
 
-// Helper function to convert Firestore Timestamps in an object to JS Dates
-const convertFirestoreTimestamps = (data: any): any => {
-  if (!data) return data;
-  if (data instanceof Timestamp) {
-    return data.toDate();
-  }
-  if (Array.isArray(data)) {
-    return data.map(convertFirestoreTimestamps);
-  }
-  if (typeof data === 'object' && data !== null) { // Ensure data is not null before iterating
-    const res: { [key: string]: any } = {};
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) { // Check for own properties
-         res[key] = convertFirestoreTimestamps(data[key]);
-      }
-    }
-    return res;
-  }
-  return data;
-};
-
-const mapFirebaseUserToAppUser = (firebaseUser: FirebaseUserType, additionalData?: Record<string, any>): User => {
+const mapSupabaseUserToAppUser = (supabaseUser: SupabaseUser, additionalData?: Record<string, any>): User => {
   const appUser: User = {
-    uid: firebaseUser.uid,
-    email: firebaseUser.email,
-    displayName: firebaseUser.displayName,
-    profilePictureUrl: firebaseUser.photoURL,
+    uid: supabaseUser.id,
+    email: supabaseUser.email,
+    displayName: supabaseUser.user_metadata?.display_name || supabaseUser.user_metadata?.full_name || null,
+    profilePictureUrl: supabaseUser.user_metadata?.avatar_url || null,
   };
 
   if (additionalData) {
-    // Explicitly pick known and expected fields from additionalData
     if (typeof additionalData.role === 'string') {
       appUser.role = additionalData.role;
     }
-    // Ensure createdAt is a JS Date (it should be after convertFirestoreTimestamps)
-    if (additionalData.createdAt instanceof Date) {
-      appUser.createdAt = additionalData.createdAt;
+    if (additionalData.created_at) {
+      appUser.createdAt = new Date(additionalData.created_at);
     }
-    // Add other fields from additionalData explicitly if they are part of the User type
-    // e.g., if (typeof additionalData.someOtherField === 'string') appUser.someOtherField = additionalData.someOtherField;
   }
   return appUser;
 };
@@ -72,105 +40,109 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => { 
-      if (firebaseUser) {
-        let appUser: User;
-        try {
-          const userDocRef = doc(db, "users", firebaseUser.uid);
-          const userDocSnap = await getDoc(userDocRef);
-          
-          let processedAdditionalData;
-          if (userDocSnap.exists()) {
-              processedAdditionalData = convertFirestoreTimestamps(userDocSnap.data());
-          }
-
-          appUser = mapFirebaseUserToAppUser(firebaseUser, processedAdditionalData);
-          
-          if (firebaseUser.email === ADMIN_EMAIL && !userDocSnap.exists()) {
-              console.log("Attempting to create admin user document in Firestore...");
-              const adminData = { 
-                  email: firebaseUser.email, 
-                  displayName: firebaseUser.displayName || "Admin User",
-                  role: "admin",
-                  createdAt: new Date() 
-              };
-              try {
-                  await setDoc(userDocRef, adminData);
-                  appUser = mapFirebaseUserToAppUser(firebaseUser, convertFirestoreTimestamps(adminData));
-                  console.log("Admin user document created in Firestore.");
-              } catch (error) {
-                  console.error("Error creating admin user document in Firestore:", error);
-                  // appUser would already be set from firebaseUser and potentially non-existent processedAdditionalData
-              }
-          }
-        } catch (error) {
-            console.error("useAuth: Error fetching user document (possibly offline):", error);
-            // Fallback to basic Firebase Auth user data if Firestore fetch fails
-            appUser = mapFirebaseUserToAppUser(firebaseUser, undefined);
-        }
-        setUser(appUser);
-      } else {
-        setUser(null);
-      }
-      setLoading(false);
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      handleAuthChange(session);
     });
 
-    return () => unsubscribe();
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      handleAuthChange(session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
+
+  const handleAuthChange = async (session: Session | null) => {
+    if (session?.user) {
+      let appUser: User;
+      try {
+        // Fetch additional user data from profiles table
+        const { data: profileData, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+
+        if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+          console.error('Error fetching user profile:', error);
+        }
+
+        appUser = mapSupabaseUserToAppUser(session.user, profileData);
+
+        // Create profile if it doesn't exist and user is admin
+        if (!profileData && session.user.email === ADMIN_EMAIL) {
+          console.log('Creating admin user profile...');
+          const adminData = {
+            id: session.user.id,
+            email: session.user.email,
+            display_name: session.user.user_metadata?.display_name || 'Admin User',
+            role: 'admin',
+            created_at: new Date().toISOString()
+          };
+
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert(adminData);
+
+          if (insertError) {
+            console.error('Error creating admin profile:', insertError);
+          } else {
+            appUser = mapSupabaseUserToAppUser(session.user, adminData);
+            console.log('Admin user profile created successfully');
+          }
+        }
+      } catch (error) {
+        console.error('Error handling auth change:', error);
+        appUser = mapSupabaseUserToAppUser(session.user);
+      }
+      setUser(appUser);
+    } else {
+      setUser(null);
+    }
+    setLoading(false);
+  };
 
   const login = async (email?: string, password?: string) => {
     if (!email || !password) {
-        throw new Error("Email and password are required.");
+      throw new Error("Email and password are required.");
     }
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password); 
-      // onAuthStateChanged will handle setting the user state and setLoading(false)
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
     } catch (error) {
-      console.error("Firebase login error:", error);
-      // setLoading(false) here might be redundant if onAuthStateChanged fires quickly on failure,
-      // but it's safer to ensure loading state is reset.
-      setLoading(false); 
-      if (error instanceof Error && (error.message.includes('auth/invalid-credential') || error.message.includes('auth/user-not-found') || error.message.includes('auth/wrong-password') || error.message.includes('auth/invalid-email'))) {
-        throw new Error("Invalid email or password. Please try again.");
+      setLoading(false);
+      if (error instanceof Error) {
+        if (error.message.includes('Invalid login credentials')) {
+          throw new Error("Invalid email or password. Please try again.");
+        }
       }
       throw new Error("Login failed. Please try again later.");
     }
-    // No finally setLoading(false) here, as successful login relies on onAuthStateChanged
   };
 
   const logout = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
-      await signOut(auth); // onAuthStateChanged will set user to null and setLoading(false)
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
     } catch (error) {
-      console.error("Firebase logout error:", error);
-      setLoading(false); // Ensure loading is reset on error
+      console.error('Logout error:', error);
+      setLoading(false);
       throw error;
     }
   };
-  
+
   const updateUserProfileInContext = async () => {
-    if (auth.currentUser) {
-      // It's possible to be offline here too.
-      try {
-        const userDocRef = doc(db, "users", auth.currentUser.uid);
-        const userDocSnap = await getDoc(userDocRef);
-        let processedAdditionalData;
-        if (userDocSnap.exists()) {
-            processedAdditionalData = convertFirestoreTimestamps(userDocSnap.data());
-        }
-        const appUser = mapFirebaseUserToAppUser(auth.currentUser, processedAdditionalData);
-        setUser(appUser);
-      } catch (error) {
-        console.error("updateUserProfileInContext: Error fetching updated user document (possibly offline):", error);
-        // Fallback: update with only auth.currentUser data if Firestore fails
-        const appUser = mapFirebaseUserToAppUser(auth.currentUser, undefined);
-        setUser(appUser);
-      }
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      await handleAuthChange(session);
     }
   };
-
 
   return (
     <AuthContext.Provider value={{ user, loading, login, logout, updateUserProfileInContext }}>

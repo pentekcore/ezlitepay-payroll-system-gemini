@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ListManagementSection } from '../components/ListManagementSection';
 import { AppSettings, User } from '../types';
-import { getAppSettings, updateAppSettings, updateCompanyInfo, getCompanyInfo, updateUserProfile, changeUserPassword, uploadFileToStorage } from '../services/firebaseService';
+import { getAppSettings, updateAppSettings, updateCompanyInfo, getCompanyInfo, updateUserProfile, changeUserPassword, uploadFileToStorage } from '../services/supabaseService';
 import { useAuth } from '../hooks/useAuth';
 import { DEFAULT_PROFILE_PIC, UploadIcon } from '../constants';
 

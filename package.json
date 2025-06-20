@@ -16,7 +16,7 @@
     "@google/genai": "google",
     "jspdf": "^2.5.1",
     "html2canvas": "^1.4.1",
-    "firebase": "^11.9.1"
+    "@supabase/supabase-js": "^2.39.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

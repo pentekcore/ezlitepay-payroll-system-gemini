@@ -4,7 +4,7 @@ import { Schedule, Employee } from '../types';
 import { Modal } from '../components/Modal';
 import BulkScheduleModal from '../components/BulkScheduleModal';
 import { AddIcon, EditIcon, DeleteIcon } from '../constants';
-import { getSchedules, addSchedule, updateSchedule, deleteSchedule, getEmployees, addBulkSchedules } from '../services/firebaseService';
+import { getSchedules, addSchedule, updateSchedule, deleteSchedule, getEmployees, addBulkSchedules } from '../services/supabaseService';
 
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

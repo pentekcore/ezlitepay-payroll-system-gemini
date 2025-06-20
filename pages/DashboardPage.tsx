@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants';
 import { Employee, TimeLog } from '../types';
-import { getEmployees, getTimeLogs, forceClockOutEmployee } from '../services/firebaseService'; // Added forceClockOutEmployee
+import { getEmployees, getTimeLogs, forceClockOutEmployee } from '../services/supabaseService';
 
 // Icons using emojis for simplicity, can be replaced with SVGs
 const TotalEmployeesIcon = () => <span className="text-2xl p-2 bg-green-200/50 rounded-full">👥</span>;

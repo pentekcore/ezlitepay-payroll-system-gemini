@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Modal } from './Modal';
 import { Payroll, Employee } from '../types';
-import { getCompanyInfo } from '../services/firebaseService'; // To get currencySymbol if needed directly
+import { getCompanyInfo } from '../services/supabaseService';
 import { APP_LOGO_URL } from '../constants'; // Fallback logo
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';

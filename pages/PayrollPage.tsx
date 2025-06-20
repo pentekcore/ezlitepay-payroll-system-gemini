@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback, ChangeEvent, FormEvent } from 'react';
 import { Payroll, Employee, WorkDayEntry, TimeLog } from '../types';
-import { getPayrolls, createPayroll, getEmployees, addSinglePayslip, getTimeLogs, getCompanyInfo } from '../services/firebaseService';
+import { getPayrolls, createPayroll, getEmployees, addSinglePayslip, getTimeLogs, getCompanyInfo } from '../services/supabaseService';
 import PayslipPreviewModal from '../components/PayslipPreviewModal'; // Import the new modal
 
 type PayrollTab = 'create' | 'view';

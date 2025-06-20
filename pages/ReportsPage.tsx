@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { generateReport } from '../services/firebaseService';
+import { generateReport } from '../services/supabaseService';
 
 type ReportType = '' | 'payroll_summary' | 'attendance_overview' | 'leave_balances' | 'employee_masterlist';
 

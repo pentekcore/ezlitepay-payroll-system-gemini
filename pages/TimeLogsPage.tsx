@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback, ChangeEvent, FormEvent } from 'react';
 import { TimeLog, Employee } from '../types';
-import { getTimeLogs, addTimeLog, updateTimeLog, getEmployees } from '../services/firebaseService';
+import { getTimeLogs, addTimeLog, updateTimeLog, getEmployees } from '../services/supabaseService';
 import { Modal } from '../components/Modal';
 import { AddIcon, EditIcon } from '../constants';
 

@@ -7,7 +7,7 @@ import QrCodeModal from '../components/QrCodeModal';
 import AiAssistantModal from '../components/AiAssistantModal'; // Added AI Assistant Modal
 import { Employee, AppSettings, ModalMode } from '../types';
 import { AddIcon } from '../constants';
-import { getEmployees, getAppSettings, archiveEmployee, unarchiveEmployee } from '../services/firebaseService';
+import { getEmployees, getAppSettings, archiveEmployee, unarchiveEmployee } from '../services/supabaseService';
 
 const EmployeesPage: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);

@@ -3,7 +3,7 @@ import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { Modal } from './Modal';
 import { Employee, AppSettings, ModalMode } from '../types';
 import { DEFAULT_PROFILE_PIC, UploadIcon } from '../constants';
-import { getAppSettings, addEmployee, updateEmployee, uploadFileToStorage } from '../services/firebaseService';
+import { getAppSettings, addEmployee, updateEmployee, uploadFileToStorage } from '../services/supabaseService';
 
 interface AddEditEmployeeModalProps {
   isOpen: boolean;
