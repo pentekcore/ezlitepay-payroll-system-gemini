@@ -64,14 +64,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           .eq('id', session.user.id)
           .single();
 
-        if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+        if (error && error.code !== 'PGRST116') {
           console.error('Error fetching user profile:', error);
+          throw error;
         }
 
-        appUser = mapSupabaseUserToAppUser(session.user, profileData);
+        // Handle case where no profile exists (PGRST116 error or no data)
+        const actualProfileData = (error && error.code === 'PGRST116') ? null : profileData;
+        appUser = mapSupabaseUserToAppUser(session.user, actualProfileData);
 
         // Create profile if it doesn't exist and user is admin
-        if (!profileData && session.user.email === ADMIN_EMAIL) {
+        if (!actualProfileData && session.user.email === ADMIN_EMAIL) {
           console.log('Creating admin user profile...');
           const adminData = {
             id: session.user.id,
