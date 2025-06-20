@@ -135,10 +135,10 @@ const DocumentManagementModal: React.FC<DocumentManagementModalProps> = ({ isOpe
               value={documentType}
               onChange={(e) => setDocumentType(e.target.value)}
               className="input-base mt-0.5 bg-white w-full"
-              disabled={isUploading || isLoading || !appSettings?.documentTypes.length}
+              disabled={isUploading || isLoading || !(appSettings?.documentTypes || []).length}
             >
-              {appSettings?.documentTypes.length ? 
-                appSettings.documentTypes.map(type => <option key={type} value={type}>{type}</option>) :
+              {(appSettings?.documentTypes || []).length ? 
+                (appSettings.documentTypes || []).map(type => <option key={type} value={type}>{type}</option>) :
                 <option>Loading types...</option>
               }
             </select>
