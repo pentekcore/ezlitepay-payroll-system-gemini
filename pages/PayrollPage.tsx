@@ -451,7 +451,7 @@ const PayrollPage: React.FC = () => {
             className="btn btn-primary flex-shrink-0 mt-3 sm:mt-0"
             disabled={isLoadingView || isProcessingRun || !viewPayPeriod.start || !viewPayPeriod.end || viewPayPeriod.start > viewPayPeriod.end}
         >
-          {isProcessingRun ? 'Processing Run...' : (isLoadingView ? 'Loading...' : 'Create Payroll Run')}
+          {isProcessingRun ? 'Processing...' : (isLoadingView ? 'Loading...' : 'Create Payroll Run')}
         </button>
       </div>
 
