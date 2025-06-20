@@ -1,0 +1,6 @@
+{
+  "name": "EZLitePay Payroll System",
+  "description": "A comprehensive payroll and HR management system designed to streamline employee data management, attendance tracking, scheduling, payroll processing, and reporting. This application uses a mock backend and demonstrates frontend capabilities with React and Tailwind CSS.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

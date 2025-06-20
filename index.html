@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EZLitePay</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-primary': '#21314e',
+                        'brand-primary-light': '#3a5078', // A lighter shade for hover or active states
+                        'brand-accent': '#5e9d4d', // Updated: Was #f09d37 (orange)
+                        'brand-accent-hover': '#4a7c3d', // Updated: Was #d88c2c (darker orange)
+                        'brand-secondary': '#5e9d4d', // This is the same green
+                        'brand-secondary-hover': '#4a7c3d', // Darker for hover
+                        'slate': { // Adding slate colors for a cooler neutral palette
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                    },
+                    borderRadius: {
+                        'xl': '0.75rem', // Standardizing xl
+                        '2xl': '1rem',   // Standardizing 2xl
+                    },
+                    boxShadow: {
+                        'subtle': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03)',
+                        'card-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.07), 0 10px 10px -5px rgba(0, 0, 0, 0.03)',
+                    }
+                }
+            },
+            plugins: [],
+        }
+    </script>
+    <style>
+      body {
+        font-family: tailwind.config.theme.extend.fontFamily?.sans?.join(', ') || 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+      }
+      /* Sleek Scrollbar styling for webkit browsers */
+      .scrollbar-sleek {
+        scrollbar-width: thin;
+        scrollbar-color: #5e9d4d /* brand-accent (updated) */ #3a5078 /* brand-primary-light/sidebar-hover */;
+      }
+      .scrollbar-sleek::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .scrollbar-sleek::-webkit-scrollbar-track {
+        background: transparent; /* Track matching sidebar or content bg */
+      }
+      .scrollbar-sleek::-webkit-scrollbar-thumb {
+        background-color: #5e9d4d /* brand-accent (updated) */;
+        border-radius: 3px;
+      }
+      .scrollbar-sleek::-webkit-scrollbar-thumb:hover {
+        background-color: #4a7c3d /* brand-accent-hover (updated) */;
+      }
+
+      /* Custom focus ring style */
+      *:focus-visible {
+        outline: 2px solid #5e9d4d /* brand-accent (updated) */ !important;
+        outline-offset: 2px !important;
+      }
+      /* Remove default outline for elements with custom focus-visible */
+      *:focus {
+        outline: none;
+      }
+
+      /* General input style, can be overridden */
+      .input-base {
+        @apply block w-full px-3 py-2 bg-white border border-slate-400 rounded-md text-sm shadow-sm placeholder-slate-400
+               focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent
+               disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
+               invalid:border-pink-500 invalid:text-pink-600
+               focus:invalid:border-pink-500 focus:invalid:ring-pink-500;
+      }
+      /* General button styles */
+      /* Base .btn class (can be used alone if only base styling is needed) */
+      .btn {
+        @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 transition-colors duration-150;
+      }
+      /* Component-like button classes including base styles directly */
+      .btn-primary {
+        @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 transition-colors duration-150 bg-brand-accent text-white hover:bg-brand-accent-hover focus:ring-brand-accent;
+      }
+      .btn-secondary {
+        @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 transition-colors duration-150 bg-brand-secondary text-white hover:bg-brand-secondary-hover focus:ring-brand-secondary;
+      }
+      .btn-neutral {
+        @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 transition-colors duration-150 bg-slate-200 text-slate-700 hover:bg-slate-300 focus:ring-slate-400;
+      }
+      .btn-ghost {
+        @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 transition-colors duration-150 bg-transparent text-slate-700 hover:bg-slate-100 focus:ring-slate-400;
+      }
+      .btn-link {
+        @apply text-brand-accent hover:text-brand-accent-hover font-medium;
+      }
+      .btn-alternate-action {
+        @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 transition-colors duration-150 bg-brand-primary text-white hover:bg-brand-primary-light focus:ring-brand-primary-light;
+      }
+
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/jsx-runtime": "https://esm.sh/react@^19.1.0/jsx-runtime",
+    "react/jsx-dev-runtime": "https://esm.sh/react@^19.1.0/jsx-dev-runtime",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.2",
+    "qr-code-styling": "https://esm.sh/qr-code-styling@^1.9.2",
+    "@google/genai": "https://esm.sh/@google/generative-ai",
+    "jspdf": "https://esm.sh/jspdf@^2.5.1",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1",
+    "firebase/app": "https://esm.sh/firebase@^11.9.1/app",
+    "firebase/auth": "https://esm.sh/firebase@^11.9.1/auth",
+    "firebase/firestore": "https://esm.sh/firebase@^11.9.1/firestore",
+    "firebase/storage": "https://esm.sh/firebase@^11.9.1/storage",
+    "firebase/analytics": "https://esm.sh/firebase@^11.9.1/analytics",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "firebase/": "https://esm.sh/firebase@^11.9.1/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-slate-100 text-slate-800">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>
