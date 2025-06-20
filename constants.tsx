@@ -17,9 +17,9 @@ export const ROUTES = {
 };
 
 export const BRAND_COLORS = {
-  primary: '#21314e', // Dark blue/charcoal
-  accent: '#5e9d4d',  // Updated Green (was Orange #f09d37)
-  secondary: '#5e9d4d', // Green
+  primary: '#1e293b', // Modern slate
+  accent: '#3b82f6',  // Modern blue
+  secondary: '#10b981', // Modern emerald
   lightBg: '#f8f9fa', // This is now more like slate-50
   darkText: '#334155', // slate-700
   lightText: '#ffffff',

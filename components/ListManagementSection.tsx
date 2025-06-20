@@ -71,8 +71,8 @@ export const ListManagementSection: React.FC<ListManagementSectionProps> = ({
           className="btn btn-secondary flex-shrink-0"
           type="button" // Ensure it doesn't submit parent form if nested
         >
-           {/* <AddIcon /> Icon removed */}
-           <span className="ml-0 hidden sm:inline">Add</span> {/* Adjusted margin & responsive text */}
+           <AddIcon />
+           <span className="ml-2 hidden sm:inline">Add</span>
            <span className="sm:hidden">Add</span> {/* Text for smaller screens */}
         </button>
       </div>
@@ -93,7 +93,7 @@ export const ListManagementSection: React.FC<ListManagementSectionProps> = ({
                 title={`Remove ${item}`}
                 type="button"
               >
-                {/* <DeleteIcon /> Icon removed */} X
+                <DeleteIcon />
               </button>
             </li>
           ))}

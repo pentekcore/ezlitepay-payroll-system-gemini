@@ -263,8 +263,8 @@ const AddEditEmployeeModal: React.FC<AddEditEmployeeModalProps> = ({ isOpen, onC
             />
             {mode !== ModalMode.VIEW && (
               <label htmlFor="profilePictureUrl" className="btn btn-ghost text-sm py-1.5 px-3">
-                {/* <UploadIcon /> */} {/* Icon removed */}
-                <span className="ml-0">Upload Photo</span> {/* Adjusted margin */}
+                <UploadIcon />
+                <span className="ml-2">Upload Photo</span>
               </label>
             )}
             <input type="file" id="profilePictureUrl" name="profilePictureUrl" onChange={handleFileChange} accept="image/*" className="hidden" disabled={mode === ModalMode.VIEW || isLoading} />

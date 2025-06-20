@@ -160,8 +160,8 @@ const DocumentManagementModal: React.FC<DocumentManagementModalProps> = ({ isOpe
               disabled={isUploading || isLoading || !selectedFile || !documentType}
               className="btn btn-secondary w-full"
             >
-              {/* <UploadIcon /> */} {/* Icon removed */}
-               <span className="ml-0">{isUploading ? 'Uploading...' : 'Upload Document'}</span> {/* Adjusted margin */}
+              <UploadIcon />
+              <span className="ml-2">{isUploading ? 'Uploading...' : 'Upload Document'}</span>
             </button>
           </div>
         </div>
@@ -180,9 +180,9 @@ const DocumentManagementModal: React.FC<DocumentManagementModalProps> = ({ isOpe
                   <p className="text-xs text-slate-500">Type: {doc.documentType} | Uploaded: {doc.uploadedAt ? new Date(doc.uploadedAt?.toDate?.() || doc.uploadedAt).toLocaleDateString() : 'N/A'}</p>
                 </div>
                 <div className="flex space-x-1 flex-shrink-0 ml-2">
-                   <button onClick={() => handlePreview(doc.fileUrl)} title="Preview" className="p-1.5 text-slate-500 hover:text-blue-600 rounded-full hover:bg-blue-50 disabled:opacity-50" disabled={isLoading}> {/* <ViewIcon/> */} P </button>
-                   <button onClick={() => handleDownload(doc.fileUrl, doc.fileName)} title="Download" className="p-1.5 text-slate-500 hover:text-green-600 rounded-full hover:bg-green-50 disabled:opacity-50" disabled={isLoading}> {/* <DownloadIcon/> */} D</button>
-                   <button onClick={() => handleDeleteDocument(doc)} title="Delete" className="p-1.5 text-slate-500 hover:text-red-600 rounded-full hover:bg-red-50 disabled:opacity-50" disabled={isLoading}>{/* <DeleteIcon/> */} X</button>
+                   <button onClick={() => handlePreview(doc.fileUrl)} title="Preview" className="p-1.5 text-slate-500 hover:text-blue-600 rounded-full hover:bg-blue-50 disabled:opacity-50" disabled={isLoading}><ViewIcon/></button>
+                   <button onClick={() => handleDownload(doc.fileUrl, doc.fileName)} title="Download" className="p-1.5 text-slate-500 hover:text-green-600 rounded-full hover:bg-green-50 disabled:opacity-50" disabled={isLoading}><DownloadIcon/></button>
+                   <button onClick={() => handleDeleteDocument(doc)} title="Delete" className="p-1.5 text-slate-500 hover:text-red-600 rounded-full hover:bg-red-50 disabled:opacity-50" disabled={isLoading}><DeleteIcon/></button>
                 </div>
               </li>
             ))}

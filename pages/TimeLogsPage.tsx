@@ -140,8 +140,8 @@ const TimeLogsPage: React.FC = () => {
           className="btn btn-secondary"
           aria-label="Add Manual Time Log"
         >
-           {/* <AddIcon /> Icon removed */}
-           <span className="ml-0">Add Manual Log</span> {/* Adjusted margin */}
+           <AddIcon />
+           <span className="ml-2">Add Manual Log</span>
         </button>
       </div>
 
@@ -228,7 +228,7 @@ const TimeLogsPage: React.FC = () => {
                           disabled={isSubmitting}
                           aria-label={`Edit time log for ${employee ? employee.firstName : log.employeeId}`}
                         >
-                          {/* <EditIcon /> Icon removed */} Edit
+                          <EditIcon />
                         </button>
                       </td>
                     </tr>

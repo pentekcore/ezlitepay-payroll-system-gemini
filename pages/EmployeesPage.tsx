@@ -164,8 +164,8 @@ const EmployeesPage: React.FC = () => {
           onClick={handleOpenAddModal}
           className="btn btn-secondary"
         >
-           {/* <AddIcon /> Icon removed */}
-           <span className="ml-0">Add New Employee</span> {/* Adjusted margin */}
+           <AddIcon />
+           <span className="ml-2">Add New Employee</span>
         </button>
       </div>
 

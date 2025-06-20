@@ -240,8 +240,8 @@ const SettingsPage: React.FC = () => {
             )}
           </div>
           <label htmlFor="companyLogoUpload" className="btn btn-ghost text-sm py-1.5 px-3 cursor-pointer">
-            {/* <UploadIcon /> Icon removed */}
-            <span className="ml-0">Change Logo</span> {/* Adjusted margin */}
+            <UploadIcon />
+            <span className="ml-2">Change Logo</span>
           </label>
           <input type="file" id="companyLogoUpload" onChange={handleCompanyLogoFileChange} accept="image/*" className="hidden" disabled={isSubmitting} />
         </div>
@@ -284,8 +284,8 @@ const SettingsPage: React.FC = () => {
             className="w-32 h-32 rounded-full object-cover mb-3 border-4 border-slate-200 shadow-sm"
           />
           <label htmlFor="profilePictureUrl" className="btn btn-ghost text-sm py-1.5 px-3 cursor-pointer">
-            {/* <UploadIcon /> Icon removed */}
-            <span className="ml-0">Change Photo</span> {/* Adjusted margin */}
+            <UploadIcon />
+            <span className="ml-2">Change Photo</span>
           </label>
           <input type="file" id="profilePictureUrl" name="profilePictureUrl" onChange={handleProfileImageChange} accept="image/*" className="hidden" disabled={isSubmitting} />
         </div>
