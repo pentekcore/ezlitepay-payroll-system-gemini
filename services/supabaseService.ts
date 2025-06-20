@@ -582,16 +582,16 @@ export const getSchedules = async (filters?: { date?: string; view?: 'daily' | '
 
     if (filters?.date) {
       if (filters.view === 'daily') {
-        query = query.eq('date', filters.date);
+        query = query.eq('start_date', filters.date);
       } else if (filters.view === 'monthly') {
         const monthStart = filters.date.substring(0, 7) + "-01";
         const tempDate = new Date(filters.date.substring(0, 7) + "-01T00:00:00");
         const monthEnd = new Date(tempDate.getFullYear(), tempDate.getMonth() + 1, 0).toISOString().split('T')[0];
-        query = query.gte('date', monthStart).lte('date', monthEnd);
+        query = query.gte('start_date', monthStart).lte('start_date', monthEnd);
       }
     }
 
-    query = query.order('date', { ascending: true }).order('shift_start_time', { ascending: true });
+    query = query.order('start_date', { ascending: true }).order('start_time', { ascending: true });
 
     const { data, error } = await query;
     if (error) throw error;
@@ -599,9 +599,9 @@ export const getSchedules = async (filters?: { date?: string; view?: 'daily' | '
     return data.map(schedule => ({
       id: schedule.id,
       employeeId: schedule.employee_id,
-      date: schedule.date,
-      shiftStartTime: schedule.shift_start_time,
-      shiftEndTime: schedule.shift_end_time,
+      date: schedule.start_date,
+      shiftStartTime: schedule.start_time,
+      shiftEndTime: schedule.end_time,
       notes: schedule.notes
     }));
   } catch (error) {
@@ -617,9 +617,10 @@ export const addSchedule = async (scheduleData: Omit<Schedule, 'id'>): Promise<S
       .from('schedules')
       .insert({
         employee_id: scheduleData.employeeId,
-        date: scheduleData.date,
-        shift_start_time: scheduleData.shiftStartTime,
-        shift_end_time: scheduleData.shiftEndTime,
+        start_date: scheduleData.date,
+        end_date: scheduleData.date,
+        start_time: scheduleData.shiftStartTime,
+        end_time: scheduleData.shiftEndTime,
         notes: scheduleData.notes
       })
       .select()
@@ -630,9 +631,9 @@ export const addSchedule = async (scheduleData: Omit<Schedule, 'id'>): Promise<S
     return {
       id: data.id,
       employeeId: data.employee_id,
-      date: data.date,
-      shiftStartTime: data.shift_start_time,
-      shiftEndTime: data.shift_end_time,
+      date: data.start_date,
+      shiftStartTime: data.start_time,
+      shiftEndTime: data.end_time,
       notes: data.notes
     };
   } catch (error) {
@@ -646,9 +647,10 @@ export const addBulkSchedules = async (schedulesData: Array<Omit<Schedule, 'id'>
   try {
     const insertData = schedulesData.map(schedule => ({
       employee_id: schedule.employeeId,
-      date: schedule.date,
-      shift_start_time: schedule.shiftStartTime,
-      shift_end_time: schedule.shiftEndTime,
+      start_date: schedule.date,
+      end_date: schedule.date,
+      start_time: schedule.shiftStartTime,
+      end_time: schedule.shiftEndTime,
       notes: schedule.notes
     }));
 
@@ -662,9 +664,9 @@ export const addBulkSchedules = async (schedulesData: Array<Omit<Schedule, 'id'>
     return data.map(schedule => ({
       id: schedule.id,
       employeeId: schedule.employee_id,
-      date: schedule.date,
-      shiftStartTime: schedule.shift_start_time,
-      shiftEndTime: schedule.shift_end_time,
+      date: schedule.start_date,
+      shiftStartTime: schedule.start_time,
+      shiftEndTime: schedule.end_time,
       notes: schedule.notes
     }));
   } catch (error) {
@@ -680,9 +682,10 @@ export const updateSchedule = async (scheduleData: Schedule): Promise<Schedule> 
       .from('schedules')
       .update({
         employee_id: scheduleData.employeeId,
-        date: scheduleData.date,
-        shift_start_time: scheduleData.shiftStartTime,
-        shift_end_time: scheduleData.shiftEndTime,
+        start_date: scheduleData.date,
+        end_date: scheduleData.date,
+        start_time: scheduleData.shiftStartTime,
+        end_time: scheduleData.shiftEndTime,
         notes: scheduleData.notes
       })
       .eq('id', scheduleData.id)
@@ -694,9 +697,9 @@ export const updateSchedule = async (scheduleData: Schedule): Promise<Schedule> 
     return {
       id: data.id,
       employeeId: data.employee_id,
-      date: data.date,
-      shiftStartTime: data.shift_start_time,
-      shiftEndTime: data.shift_end_time,
+      date: data.start_date,
+      shiftStartTime: data.start_time,
+      shiftEndTime: data.end_time,
       notes: data.notes
     };
   } catch (error) {
