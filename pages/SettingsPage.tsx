@@ -16,7 +16,6 @@ const SectionWrapper: React.FC<{title: string, children: React.ReactNode, onSubm
       </div>
       {onSubmit && submitText && (
           <div className="mt-8 pt-5 border-t border-slate-200 text-right">
-          <button type="submit" className="btn btn-secondary" disabled={isSubmittingForm}>{isSubmittingForm ? 'Saving...' : submitText}</button>
           <button type="submit" className="btn-secondary" disabled={isSubmittingForm}>{isSubmittingForm ? 'Saving...' : submitText}</button>
           </div>
       )}
