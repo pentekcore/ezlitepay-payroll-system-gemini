@@ -13,7 +13,7 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
     "qr-code-styling": "^1.9.2",
-    "@google/genai": "google",
+    "@google/generative-ai": "^0.21.0",
     "jspdf": "^2.5.1",
     "html2canvas": "^1.4.1",
     "@supabase/supabase-js": "^2.39.0"
