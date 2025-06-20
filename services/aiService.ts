@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI as GoogleGenAI, type GenerateContentResponse } from "@google/genai";
+import { GoogleGenerativeAI as GoogleGenAI, type GenerateContentResponse } from "@google/generative-ai";
 import { Employee } from '../types';
 
 // Assume process.env.API_KEY is pre-configured and accessible.
