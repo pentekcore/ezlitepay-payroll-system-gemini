@@ -165,21 +165,15 @@ const SettingsPage: React.FC = () => {
       let newProfilePictureUrl = profileData.profilePictureUrl;
       if (profileImageFile) {
         newProfilePictureUrl = profileImagePreview || undefined; 
-        // For production, actual upload to Firebase Storage would happen here:
-        // newProfilePictureUrl = await uploadFileToStorage(profileImageFile, `user_profiles/${authUser.uid}/${profileImageFile.name}`);
       }
       
       const updatedProfilePayload = {
         displayName: profileData.displayName,
-        // Email updates are sensitive and often require re-authentication.
-        // If email change is intended, ensure firebaseService.updateUserProfile handles it correctly or add specific flow.
-        // email: profileData.email, 
         photoURL: newProfilePictureUrl 
       };
 
-      await updateUserProfile(updatedProfilePayload); // This updates Firebase Auth and Firestore user doc
+      await updateUserProfile(updatedProfilePayload);
       
-      // Refresh user context to reflect changes
       await updateUserProfileInContext(); 
 
       alert("Profile updated successfully!");
@@ -241,7 +235,6 @@ const SettingsPage: React.FC = () => {
             )}
           </div>
           <label htmlFor="companyLogoUpload" className="btn btn-ghost text-sm py-1.5 px-3 cursor-pointer">
-          <label htmlFor="companyLogoUpload" className="btn-ghost text-sm py-1.5 px-3 cursor-pointer">
             <UploadIcon />
             <span className="ml-2">Change Logo</span>
           </label>
@@ -286,7 +279,6 @@ const SettingsPage: React.FC = () => {
             className="w-32 h-32 rounded-full object-cover mb-3 border-4 border-slate-200 shadow-sm"
           />
           <label htmlFor="profilePictureUrl" className="btn btn-ghost text-sm py-1.5 px-3 cursor-pointer">
-          <label htmlFor="profilePictureUrl" className="btn-ghost text-sm py-1.5 px-3 cursor-pointer">
             <UploadIcon />
             <span className="ml-2">Change Photo</span>
           </label>
@@ -299,7 +291,7 @@ const SettingsPage: React.FC = () => {
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-1">Email Address</label>
-            <input type="email" name="email" id="email" value={profileData.email} onChange={handleProfileChange} className="input-base" disabled={isSubmitting || true /* Email change disabled for now */} readOnly/>
+            <input type="email" name="email" id="email" value={profileData.email} onChange={handleProfileChange} className="input-base" disabled={isSubmitting || true} readOnly/>
              <p className="text-xs text-slate-500 mt-1">Email address changes are complex and currently disabled in this form.</p>
           </div>
         </div>
@@ -339,7 +331,7 @@ const SettingsPage: React.FC = () => {
     </SectionWrapper>
   );
 
-  if (isLoading && !appSettings && !companyInfo.name) { // Check against a field in companyInfo to be sure
+  if (isLoading && !appSettings && !companyInfo.name) {
      return (
       <div className="flex flex-col justify-center items-center h-96 text-slate-500">
         <svg className="animate-spin h-8 w-8 text-brand-accent mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -372,7 +364,7 @@ const SettingsPage: React.FC = () => {
           ))}
         </nav>
       </div>
-      <div className="py-2"> {/* Reduced top padding as tabs provide visual separation */}
+      <div className="py-2">
         {activeTab === 'General' && renderGeneralSettings()}
         {activeTab === 'My Profile' && renderMyProfileSettings()}
         {activeTab === 'User Management' && renderUserManagementSettings()}
