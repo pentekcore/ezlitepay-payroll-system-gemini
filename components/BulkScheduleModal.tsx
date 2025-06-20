@@ -116,8 +116,8 @@ const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({
       size="lg"
       footer={
         <>
-          <button type="button" onClick={onClose} className="btn btn-neutral" disabled={isSubmitting}>Cancel</button>
-          <button type="submit" form="bulkScheduleForm" className="btn btn-secondary" disabled={isSubmitting}>
+          <button type="button" onClick={onClose} className="btn-neutral" disabled={isSubmitting}>Cancel</button>
+          <button type="submit" form="bulkScheduleForm" className="btn-secondary" disabled={isSubmitting}>
             {isSubmitting ? 'Saving...' : 'Save Bulk Schedule'}
           </button>
         </>

@@ -428,7 +428,7 @@ const PayrollPage: React.FC = () => {
                 <div><p className="text-xs text-slate-500">Net Pay</p><p className="text-xl font-bold text-brand-primary">${payslipSummary.net.toFixed(2)}</p></div>
             </div>
             <div className="text-right">
-                <button type="button" onClick={handleSavePayslip} className="btn btn-secondary" disabled={isSavingPayslip}>
+                <button type="button" onClick={handleSavePayslip} className="btn-secondary" disabled={isSavingPayslip}>
                     {isSavingPayslip ? 'Saving...' : 'Calculate & Save Payslip'}
                 </button>
             </div>
@@ -448,7 +448,7 @@ const PayrollPage: React.FC = () => {
         <button 
             type="button"
             onClick={handleCreatePayrollRun} 
-            className="btn btn-primary flex-shrink-0 mt-3 sm:mt-0"
+            className="btn-primary flex-shrink-0 mt-3 sm:mt-0"
             disabled={isLoadingView || isProcessingRun || !viewPayPeriod.start || !viewPayPeriod.end || viewPayPeriod.start > viewPayPeriod.end}
         >
           {isProcessingRun ? 'Processing...' : (isLoadingView ? 'Loading...' : 'Create Payroll Run')}

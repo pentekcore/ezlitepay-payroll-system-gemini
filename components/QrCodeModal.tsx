@@ -70,7 +70,7 @@ const QrCodeModal: React.FC<QrCodeModalProps> = ({ isOpen, onClose, employee }) 
         
         <button
           onClick={handleDownload}
-          className="btn btn-secondary w-full sm:w-auto"
+          className="btn-secondary w-full sm:w-auto"
         >
           Download QR Code (PNG)
         </button>

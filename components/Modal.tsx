@@ -47,7 +47,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
           {children}
         </div>
         {footer && (
-          <div className="p-5 border-t border-slate-200 bg-slate-50 rounded-b-xl flex justify-end space-x-3">
+          <div className="p-5 border-t border-slate-200 bg-slate-50 rounded-b-xl flex justify-end space-x-3 [&>button]:min-w-[100px]">
             {footer}
           </div>
         )}

@@ -64,13 +64,13 @@ const AiAssistantModal: React.FC<AiAssistantModalProps> = ({ isOpen, onClose, em
       size="xl"
       footer={
         <>
-          <button type="button" onClick={handleClear} className="btn btn-neutral" disabled={isLoading}>
+          <button type="button" onClick={handleClear} className="btn-neutral" disabled={isLoading}>
             Clear
           </button>
           <button 
             type="button" 
             onClick={handleSubmitQuestion} 
-            className="btn btn-primary" 
+            className="btn-primary" 
             disabled={isLoading || !question.trim()}
           >
             {isLoading ? 'Thinking...' : 'Ask AI'}

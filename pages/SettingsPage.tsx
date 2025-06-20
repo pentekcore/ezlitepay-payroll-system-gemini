@@ -17,6 +17,7 @@ const SectionWrapper: React.FC<{title: string, children: React.ReactNode, onSubm
       {onSubmit && submitText && (
           <div className="mt-8 pt-5 border-t border-slate-200 text-right">
           <button type="submit" className="btn btn-secondary" disabled={isSubmittingForm}>{isSubmittingForm ? 'Saving...' : submitText}</button>
+          <button type="submit" className="btn-secondary" disabled={isSubmittingForm}>{isSubmittingForm ? 'Saving...' : submitText}</button>
           </div>
       )}
   </form>
@@ -240,6 +241,7 @@ const SettingsPage: React.FC = () => {
             )}
           </div>
           <label htmlFor="companyLogoUpload" className="btn btn-ghost text-sm py-1.5 px-3 cursor-pointer">
+          <label htmlFor="companyLogoUpload" className="btn-ghost text-sm py-1.5 px-3 cursor-pointer">
             <UploadIcon />
             <span className="ml-2">Change Logo</span>
           </label>
@@ -284,6 +286,7 @@ const SettingsPage: React.FC = () => {
             className="w-32 h-32 rounded-full object-cover mb-3 border-4 border-slate-200 shadow-sm"
           />
           <label htmlFor="profilePictureUrl" className="btn btn-ghost text-sm py-1.5 px-3 cursor-pointer">
+          <label htmlFor="profilePictureUrl" className="btn-ghost text-sm py-1.5 px-3 cursor-pointer">
             <UploadIcon />
             <span className="ml-2">Change Photo</span>
           </label>
@@ -326,7 +329,7 @@ const SettingsPage: React.FC = () => {
       <p className="text-slate-600">This section will allow management of system administrators. Features include adding new admins, editing roles/permissions, and deactivating admin accounts.</p>
       <p className="text-slate-500 text-sm mt-2"> (Placeholder: Full implementation of user management with Firebase Auth (creating users) and Firestore (storing roles) will be added later. This often involves Cloud Functions for secure user creation.)</p>
       <div className="mt-6">
-        <button className="btn btn-secondary" disabled>
+        <button className="btn-secondary" disabled>
           Add Admin (Coming Soon)
         </button>
       </div>

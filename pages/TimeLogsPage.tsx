@@ -137,7 +137,7 @@ const TimeLogsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => handleOpenModal()}
-          className="btn btn-secondary"
+          className="btn-secondary"
           aria-label="Add Manual Time Log"
         >
           Add Manual Log
@@ -246,8 +246,8 @@ const TimeLogsPage: React.FC = () => {
             title={editingLog ? "Edit Time Log" : "Add Manual Time Log"}
             footer={
                 <>
-                  <button type="button" onClick={handleCloseModal} className="btn btn-neutral" disabled={isSubmitting}>Cancel</button>
-                  <button type="submit" form="timeLogForm" className="btn btn-secondary" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Log'}</button>
+                  <button type="button" onClick={handleCloseModal} className="btn-neutral" disabled={isSubmitting}>Cancel</button>
+                  <button type="submit" form="timeLogForm" className="btn-secondary" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Log'}</button>
                 </>
             }
         >

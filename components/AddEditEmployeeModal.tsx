@@ -243,10 +243,10 @@ const AddEditEmployeeModal: React.FC<AddEditEmployeeModalProps> = ({ isOpen, onC
     <Modal isOpen={isOpen} onClose={onClose} title={modalTitle} size="3xl"
       footer={mode !== ModalMode.VIEW && (
         <>
-          <button type="button" onClick={onClose} disabled={isLoading} className="btn btn-neutral">
+          <button type="button" onClick={onClose} disabled={isLoading} className="btn-neutral">
             Cancel
           </button>
-          <button type="submit" form="employeeForm" disabled={isLoading || isFetchingSettings} className="btn btn-secondary">
+          <button type="submit" form="employeeForm" disabled={isLoading || isFetchingSettings} className="btn-secondary">
             {isLoading ? 'Saving...' : (mode === ModalMode.ADD ? 'Add Employee' : 'Save Changes')}
           </button>
         </>
@@ -262,7 +262,7 @@ const AddEditEmployeeModal: React.FC<AddEditEmployeeModalProps> = ({ isOpen, onC
               className="w-28 h-28 rounded-full object-cover mb-3 border-4 border-slate-200 shadow-sm"
             />
             {mode !== ModalMode.VIEW && (
-              <label htmlFor="profilePictureUrl" className="btn btn-ghost text-sm py-1.5 px-3">
+              <label htmlFor="profilePictureUrl" className="btn-ghost text-sm py-1.5 px-3 cursor-pointer">
                 <UploadIcon />
                 <span className="ml-2">Upload Photo</span>
               </label>

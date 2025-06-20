@@ -397,7 +397,7 @@ const SchedulePage: React.FC = () => {
             <button
                 type="button"
                 onClick={handleOpenBulkModal}
-                className="btn btn-alternate-action"
+                className="btn-alternate-action"
                 disabled={isSubmitting || isLoading}
                 aria-label="Add Bulk Schedules"
             >
@@ -406,7 +406,7 @@ const SchedulePage: React.FC = () => {
             <button
                 type="button"
                 onClick={() => handleOpenModal()}
-                className="btn btn-alternate-action"
+                className="btn-alternate-action"
                 disabled={isSubmitting || isLoading}
                 aria-label="Add Single Schedule"
             >
@@ -466,8 +466,8 @@ const SchedulePage: React.FC = () => {
           title={editingSchedule ? "Edit Schedule" : "Add New Schedule"}
           footer={
             <>
-              <button type="button" onClick={handleCloseModal} className="btn btn-neutral" disabled={isSubmitting}>Cancel</button>
-              <button type="submit" form="scheduleForm" className="btn btn-secondary" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Schedule'}</button>
+              <button type="button" onClick={handleCloseModal} className="btn-neutral" disabled={isSubmitting}>Cancel</button>
+              <button type="submit" form="scheduleForm" className="btn-secondary" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Schedule'}</button>
             </>
           }
         >

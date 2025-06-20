@@ -75,7 +75,7 @@ const PayslipPreviewModal: React.FC<PayslipPreviewModalProps> = ({ isOpen, onClo
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Payslip Preview" size="2xl" 
       footer={
-        <button onClick={handleDownloadPdf} className="btn btn-primary">Download PDF</button>
+        <button onClick={handleDownloadPdf} className="btn-primary">Download PDF</button>
       }
     >
       <div ref={payslipContentRef} className="p-4 bg-white text-sm font-sans text-slate-800" style={{ fontFamily: 'Arial, sans-serif' }}>

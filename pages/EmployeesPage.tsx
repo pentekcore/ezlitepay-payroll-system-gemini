@@ -162,7 +162,7 @@ const EmployeesPage: React.FC = () => {
         <button
           type="button"
           onClick={handleOpenAddModal}
-          className="btn btn-secondary"
+          className="btn-secondary"
         >
           Add New Employee
         </button>

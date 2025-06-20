@@ -158,7 +158,7 @@ const DocumentManagementModal: React.FC<DocumentManagementModalProps> = ({ isOpe
             <button
               onClick={handleUpload}
               disabled={isUploading || isLoading || !selectedFile || !documentType}
-              className="btn btn-secondary w-full"
+              className="btn-secondary w-full"
             >
               <UploadIcon />
               <span className="ml-2">{isUploading ? 'Uploading...' : 'Upload Document'}</span>

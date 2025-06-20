@@ -68,7 +68,7 @@ export const ListManagementSection: React.FC<ListManagementSectionProps> = ({
         <button
           onClick={handleAddItem}
           disabled={disabled || !newItem.trim()}
-          className="btn btn-secondary flex-shrink-0"
+          className="btn-secondary flex-shrink-0"
           type="button" // Ensure it doesn't submit parent form if nested
         >
           Add

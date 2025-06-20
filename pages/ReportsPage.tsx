@@ -96,7 +96,7 @@ const ReportsPage: React.FC = () => {
                 type="button"
                 onClick={handleGenerateReport}
                 disabled={isLoading || !selectedReport}
-                className="btn btn-primary w-full"
+                className="btn-primary w-full"
                 aria-label="Generate selected report"
             >
                 {isLoading ? 'Generating...' : 'Generate Report'}
@@ -107,7 +107,7 @@ const ReportsPage: React.FC = () => {
 
       {reportData && reportData.length > 0 && (
         <div className="mb-6 flex justify-end">
-            <button type="button" onClick={handleExportCsv} className="btn btn-neutral" aria-label="Export report data as CSV">
+            <button type="button" onClick={handleExportCsv} className="btn-neutral" aria-label="Export report data as CSV">
                 Export as CSV
             </button>
         </div>

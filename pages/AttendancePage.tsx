@@ -240,7 +240,7 @@ const AttendancePage: React.FC = () => {
 
         <button 
             onClick={simulateScan}
-            className="w-full btn btn-primary py-3 text-lg mb-5"
+            className="w-full btn-primary py-3 text-lg mb-5"
         >
             Simulate Scan ({getEmployeeName(SIMULATED_EMP_ID) || 'Employee'} - {SIMULATED_EMP_ID})
         </button>
@@ -257,7 +257,7 @@ const AttendancePage: React.FC = () => {
               <button
                 key={index}
                 onClick={btn.action}
-                className={`btn py-2.5 text-sm ${btn.style ? btn.style : 'btn-secondary'}`}
+                className={`py-2.5 text-sm ${btn.style ? btn.style : 'btn-secondary'}`}
               >
                 {btn.label}
               </button>
