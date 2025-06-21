@@ -421,6 +421,13 @@ export const updateUserProfile = async (profileUpdates: { displayName?: string; 
 
     if (authError) throw authError;
 
+    // Fetch existing profile to get current role
+    const { data: existingProfile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
     // Update profile table
     const { error: profileError } = await supabase
       .from('profiles')
@@ -428,6 +435,7 @@ export const updateUserProfile = async (profileUpdates: { displayName?: string; 
         id: user.id,
         display_name: profileUpdates.displayName,
         avatar_url: profileUpdates.photoURL,
+        role: existingProfile?.role || 'user',
       });
 
     if (profileError) throw profileError;

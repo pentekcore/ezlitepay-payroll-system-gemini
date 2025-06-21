@@ -145,12 +145,12 @@ const SettingsPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { user:authUser, updateUserProfileInContext } = useAuth(); 
-  const [profileData, setProfileData] = useState<{displayName: string, email: string, profilePictureUrl?: string}>({displayName: '', email: ''});
+  const [profileData, setProfileData] = useState<{displayName: string, email: string, profilePictureUrl: string}>({displayName: '', email: '', profilePictureUrl: ''});
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
-  const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
+  const [profileImagePreview, setProfileImagePreview] = useState<string>('');
   
   const [companyLogoFile, setCompanyLogoFile] = useState<File | null>(null);
-  const [companyLogoPreview, setCompanyLogoPreview] = useState<string | null>(null);
+  const [companyLogoPreview, setCompanyLogoPreview] = useState<string>('');
 
   const [passwordData, setPasswordData] = useState({currentPassword: '', newPassword: '', confirmNewPassword: ''});
 
@@ -164,10 +164,10 @@ const SettingsPage: React.FC = () => {
       setAppSettings(settings);
       const currentCompanyInfo = compInfoResult || {name: '', address: '', logoUrl: '', currency: ''};
       setCompanyInfo(currentCompanyInfo);
-      setCompanyLogoPreview(currentCompanyInfo.logoUrl || null);
+      setCompanyLogoPreview(currentCompanyInfo.logoUrl || '');
 
       if (authUser) {
-        setProfileData({displayName: authUser.displayName || '', email: authUser.email || '', profilePictureUrl: authUser.profilePictureUrl});
+        setProfileData({displayName: authUser.displayName || '', email: authUser.email || '', profilePictureUrl: authUser.profilePictureUrl || ''});
         setProfileImagePreview(authUser.profilePictureUrl || DEFAULT_PROFILE_PIC);
       }
     } catch (error) {
@@ -217,7 +217,7 @@ const SettingsPage: React.FC = () => {
       setCompanyLogoFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setCompanyLogoPreview(reader.result as string);
+        setCompanyLogoPreview(reader.result as string || '');
       };
       reader.readAsDataURL(file);
     }
@@ -227,7 +227,7 @@ const SettingsPage: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      let finalLogoUrl = companyInfo.logoUrl; 
+      let finalLogoUrl = companyInfo.logoUrl || ''; 
       if (companyLogoFile) {
         const logoPath = `company_assets/logo_${Date.now()}_${companyLogoFile.name}`;
         finalLogoUrl = await uploadFileToStorage(companyLogoFile, logoPath);
@@ -239,7 +239,7 @@ const SettingsPage: React.FC = () => {
       };
       await updateCompanyInfo(updatedCompanyInfo);
       setCompanyInfo(updatedCompanyInfo); 
-      setCompanyLogoPreview(updatedCompanyInfo.logoUrl);
+      setCompanyLogoPreview(updatedCompanyInfo.logoUrl || '');
       setCompanyLogoFile(null); 
       alert("Company information updated successfully!");
     } catch (error) {
@@ -260,7 +260,7 @@ const SettingsPage: React.FC = () => {
       setProfileImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImagePreview(reader.result as string);
+        setProfileImagePreview(reader.result as string || '');
       };
       reader.readAsDataURL(file);
     }
@@ -271,14 +271,14 @@ const SettingsPage: React.FC = () => {
     if (!authUser) return;
     setIsSubmitting(true);
     try {
-      let newProfilePictureUrl = profileData.profilePictureUrl;
+      let newProfilePictureUrl = profileData.profilePictureUrl || '';
       if (profileImageFile) {
-        newProfilePictureUrl = profileImagePreview || undefined; 
+        newProfilePictureUrl = profileImagePreview || ''; 
       }
       
       const updatedProfilePayload = {
         displayName: profileData.displayName,
-        photoURL: newProfilePictureUrl 
+        photoURL: newProfilePictureUrl || ''
       };
 
       await updateUserProfile(updatedProfilePayload);
@@ -360,7 +360,7 @@ const SettingsPage: React.FC = () => {
               type="text" 
               name="name" 
               id="companyName" 
-              value={companyInfo.name} 
+              value={companyInfo.name || ''} 
               onChange={handleCompanyInfoChange} 
               className="input-base focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all duration-200" 
               placeholder="Enter your company name"
@@ -372,7 +372,7 @@ const SettingsPage: React.FC = () => {
               type="text" 
               name="currency" 
               id="companyCurrency" 
-              value={companyInfo.currency} 
+              value={companyInfo.currency || ''} 
               onChange={handleCompanyInfoChange} 
               className="input-base focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all duration-200" 
               placeholder="e.g., $, €, £"
@@ -383,7 +383,7 @@ const SettingsPage: React.FC = () => {
             <textarea 
               name="address" 
               id="companyAddress" 
-              value={companyInfo.address} 
+              value={companyInfo.address || ''} 
               onChange={handleCompanyInfoChange} 
               rows={3} 
               className="input-base focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all duration-200" 
@@ -431,7 +431,7 @@ const SettingsPage: React.FC = () => {
               type="text" 
               name="displayName" 
               id="displayName" 
-              value={profileData.displayName} 
+              value={profileData.displayName || ''} 
               onChange={handleProfileChange} 
               className="input-base focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all duration-200" 
               disabled={isSubmitting}
@@ -444,7 +444,7 @@ const SettingsPage: React.FC = () => {
               type="email" 
               name="email" 
               id="email" 
-              value={profileData.email} 
+              value={profileData.email || ''} 
               onChange={handleProfileChange} 
               className="input-base bg-slate-100 cursor-not-allowed" 
               disabled={true} 
@@ -463,7 +463,7 @@ const SettingsPage: React.FC = () => {
               type="password" 
               name="currentPassword" 
               id="currentPassword_id" 
-              value={passwordData.currentPassword} 
+              value={passwordData.currentPassword || ''} 
               onChange={handlePasswordChange} 
               className="input-base focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all duration-200" 
               disabled={isSubmitting} 
@@ -477,7 +477,7 @@ const SettingsPage: React.FC = () => {
               type="password" 
               name="newPassword" 
               id="newPassword_id" 
-              value={passwordData.newPassword} 
+              value={passwordData.newPassword || ''} 
               onChange={handlePasswordChange} 
               className="input-base focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all duration-200" 
               disabled={isSubmitting} 
@@ -491,7 +491,7 @@ const SettingsPage: React.FC = () => {
               type="password" 
               name="confirmNewPassword" 
               id="confirmNewPassword_id" 
-              value={passwordData.confirmNewPassword} 
+              value={passwordData.confirmNewPassword || ''} 
               onChange={handlePasswordChange} 
               className="input-base focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all duration-200" 
               disabled={isSubmitting} 
