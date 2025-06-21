@@ -210,7 +210,15 @@ export const getAppSettings = async (): Promise<AppSettings> => {
       return defaultSettings;
     }
 
-    return data.value as AppSettings;
+    // Merge database settings with default settings to ensure all properties exist
+    const databaseSettings = data.value as Partial<AppSettings>;
+    return {
+      departments: databaseSettings.departments || defaultSettings.departments,
+      positions: databaseSettings.positions || defaultSettings.positions,
+      employeeTypes: databaseSettings.employeeTypes || defaultSettings.employeeTypes,
+      statuses: databaseSettings.statuses || defaultSettings.statuses,
+      documentTypes: databaseSettings.documentTypes || defaultSettings.documentTypes
+    };
   } catch (error) {
     console.error("Error fetching app settings from Supabase:", error);
     return defaultSettings;
