@@ -185,11 +185,26 @@ const SettingsPage: React.FC = () => {
   const handleUpdateList = async (listName: keyof Pick<AppSettings, 'departments' | 'positions' | 'employeeTypes' | 'statuses' | 'documentTypes'>, items: string[]) => {
     if (!appSettings) return;
     console.log(`Updating ${listName} with items:`, items);
+    console.log(`Current appSettings before update:`, appSettings);
     try {
       const updatedSettings = { ...appSettings, [listName]: items };
+      console.log(`Updated settings object:`, updatedSettings);
       await updateAppSettings(updatedSettings); 
       setAppSettings(updatedSettings); 
       console.log(`Successfully updated ${listName}`);
+      
+      // Force a re-fetch to ensure we have the latest data
+      setTimeout(async () => {
+        console.log("Re-fetching settings to verify persistence...");
+        try {
+          const freshSettings = await getAppSettings();
+          console.log("Fresh settings from server:", freshSettings);
+          setAppSettings(freshSettings);
+        } catch (error) {
+          console.error("Error re-fetching settings:", error);
+        }
+      }, 1000);
+      
     } catch (error) {
       console.error(`Error updating ${listName}:`, error);
       alert(`Failed to update ${listName}. ${error instanceof Error ? error.message : String(error)}`);
@@ -207,7 +222,9 @@ const SettingsPage: React.FC = () => {
       return;
     }
     console.log(`Adding item "${item}" to ${listName}`);
+    console.log(`Current ${listName} list:`, appSettings[listName]);
     const newList = [...appSettings[listName], item];
+    console.log(`New ${listName} list:`, newList);
     await handleUpdateList(listName, newList);
   }, [appSettings, handleUpdateList]);
 
@@ -221,7 +238,9 @@ const SettingsPage: React.FC = () => {
       return;
     }
     console.log(`Removing item "${item}" from ${listName}`);
+    console.log(`Current ${listName} list:`, appSettings[listName]);
     const newList = appSettings[listName].filter(i => i !== item);
+    console.log(`New ${listName} list:`, newList);
     await handleUpdateList(listName, newList);
   }, [appSettings, handleUpdateList]);
   

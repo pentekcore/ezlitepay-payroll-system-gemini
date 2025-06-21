@@ -194,6 +194,7 @@ export const getAppSettings = async (): Promise<AppSettings> => {
     if (error && error.code !== 'PGRST116') throw error;
     
     if (!data) {
+      console.log("No settings found, creating default settings");
       // Initialize default settings
       const { error: insertError } = await supabase
         .from('app_settings')
@@ -207,18 +208,22 @@ export const getAppSettings = async (): Promise<AppSettings> => {
         });
       
       if (insertError) throw insertError;
+      console.log("Default settings created successfully");
       return defaultSettings;
     }
 
+    console.log("Retrieved settings from database:", data.value);
     // Merge database settings with default settings to ensure all properties exist
     const databaseSettings = data.value as Partial<AppSettings>;
-    return {
+    const mergedSettings = {
       departments: databaseSettings.departments || defaultSettings.departments,
       positions: databaseSettings.positions || defaultSettings.positions,
       employeeTypes: databaseSettings.employeeTypes || defaultSettings.employeeTypes,
       statuses: databaseSettings.statuses || defaultSettings.statuses,
       documentTypes: databaseSettings.documentTypes || defaultSettings.documentTypes
     };
+    console.log("Merged settings:", mergedSettings);
+    return mergedSettings;
   } catch (error) {
     console.error("Error fetching app settings from Supabase:", error);
     return defaultSettings;
@@ -228,8 +233,17 @@ export const getAppSettings = async (): Promise<AppSettings> => {
 export const updateAppSettings = async (settingsData: AppSettings): Promise<AppSettings> => {
   console.log("Supabase: Updating app settings", settingsData);
   try {
+    // First, let's check if the record exists
+    const { data: existingData } = await supabase
+      .from('app_settings')
+      .select('*')
+      .eq('key', 'main_config')
+      .single();
+
+    console.log("Existing settings data:", existingData);
+
     // Use upsert with proper conflict resolution
-    const { error } = await supabase
+    const { data: upsertData, error } = await supabase
       .from('app_settings')
       .upsert({ 
         key: 'main_config', 
@@ -240,10 +254,11 @@ export const updateAppSettings = async (settingsData: AppSettings): Promise<AppS
         sort_order: 1
       }, {
         onConflict: 'key'
-      });
+      })
+      .select();
 
     if (error) throw error;
-    console.log("Supabase: App settings updated successfully");
+    console.log("Supabase: App settings upserted successfully:", upsertData);
     
     // Verify the update by fetching the data back
     const { data: verifyData, error: verifyError } = await supabase
@@ -255,7 +270,14 @@ export const updateAppSettings = async (settingsData: AppSettings): Promise<AppS
     if (verifyError) {
       console.warn("Could not verify settings update:", verifyError);
     } else {
-      console.log("Verified updated settings:", verifyData.value);
+      console.log("Verified updated settings:", verifyData?.value);
+      
+      // Double-check that our changes are actually there
+      const verifiedSettings = verifyData?.value as AppSettings;
+      if (verifiedSettings) {
+        console.log("Departments in verified data:", verifiedSettings.departments);
+        console.log("Positions in verified data:", verifiedSettings.positions);
+      }
     }
     
     return settingsData;
