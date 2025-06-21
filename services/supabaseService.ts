@@ -435,7 +435,7 @@ export const updateUserProfile = async (profileUpdates: { displayName?: string; 
         id: user.id,
         display_name: profileUpdates.displayName,
         avatar_url: profileUpdates.photoURL,
-        role: existingProfile?.role || 'user',
+        role: existingProfile?.role || 'authenticated',
       });
 
     if (profileError) throw profileError;
