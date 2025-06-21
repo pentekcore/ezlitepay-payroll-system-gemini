@@ -228,18 +228,7 @@ export const getAppSettings = async (): Promise<AppSettings> => {
 export const updateAppSettings = async (settingsData: AppSettings): Promise<AppSettings> => {
   console.log("Supabase: Updating app settings", settingsData);
   try {
-    // First check if the record exists
-    const { data: existingData, error: fetchError } = await supabase
-      .from('app_settings')
-      .select('*')
-      .eq('key', 'main_config')
-      .single();
-
-    if (fetchError && fetchError.code !== 'PGRST116') {
-      throw fetchError;
-    }
-
-    // Use upsert to handle both insert and update cases
+    // Use upsert with proper conflict resolution
     const { error } = await supabase
       .from('app_settings')
       .upsert({ 
@@ -255,6 +244,20 @@ export const updateAppSettings = async (settingsData: AppSettings): Promise<AppS
 
     if (error) throw error;
     console.log("Supabase: App settings updated successfully");
+    
+    // Verify the update by fetching the data back
+    const { data: verifyData, error: verifyError } = await supabase
+      .from('app_settings')
+      .select('value')
+      .eq('key', 'main_config')
+      .single();
+    
+    if (verifyError) {
+      console.warn("Could not verify settings update:", verifyError);
+    } else {
+      console.log("Verified updated settings:", verifyData.value);
+    }
+    
     return settingsData;
   } catch (error) {
     console.error("Error updating app settings in Supabase:", error);
@@ -383,7 +386,8 @@ export const getCompanyInfo = async (): Promise<{ name: string; address: string;
     if (error && error.code !== 'PGRST116') throw error;
     
     if (!data) {
-      const { error: insertError } = await supabase
+      console.log("No company info found, creating default");
+      const { data: insertData, error: insertError } = await supabase
         .from('app_settings')
         .insert({ 
           key: 'company_info', 
@@ -392,12 +396,16 @@ export const getCompanyInfo = async (): Promise<{ name: string; address: string;
           label: 'Company Information',
           is_active: true,
           sort_order: 2
-        });
+        })
+        .select()
+        .single();
       
       if (insertError) throw insertError;
+      console.log("Created default company info:", insertData);
       return defaultInfo;
     }
 
+    console.log("Retrieved company info:", data.value);
     return data.value;
   } catch (error) {
     console.error("Error fetching company info from Supabase:", error);
@@ -408,7 +416,7 @@ export const getCompanyInfo = async (): Promise<{ name: string; address: string;
 export const updateCompanyInfo = async (info: { name: string; address: string; logoUrl: string; currency: string; }): Promise<void> => {
   console.log("Supabase: Updating company info", info);
   try {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('app_settings')
       .upsert({ 
         key: 'company_info', 
@@ -417,9 +425,13 @@ export const updateCompanyInfo = async (info: { name: string; address: string; l
         label: 'Company Information',
         is_active: true,
         sort_order: 2
-      });
+      }, {
+        onConflict: 'key'
+      })
+      .select();
 
     if (error) throw error;
+    console.log("Company info updated successfully:", data);
   } catch (error) {
     console.error("Error updating company info in Supabase:", error);
     throw error;
