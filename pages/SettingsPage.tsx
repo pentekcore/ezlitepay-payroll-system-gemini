@@ -395,12 +395,12 @@ const SettingsPage: React.FC = () => {
 
       {appSettings && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <ModernListSection title="Departments" items={appSettings.departments} onAddItem={handleAddItem('departments')} onRemoveItem={handleRemoveItem('departments')} isLoading={isLoading} icon="🏢" />
-          <ModernListSection title="Positions" items={appSettings.positions} onAddItem={handleAddItem('positions')} onRemoveItem={handleRemoveItem('positions')} isLoading={isLoading} icon="💼" />
-          <ModernListSection title="Employee Types" items={appSettings.employeeTypes} onAddItem={handleAddItem('employeeTypes')} onRemoveItem={handleRemoveItem('employeeTypes')} isLoading={isLoading} icon="👥" />
-          <ModernListSection title="Employee Statuses" items={appSettings.statuses} onAddItem={handleAddItem('statuses')} onRemoveItem={handleRemoveItem('statuses')} isLoading={isLoading} icon="📊" />
+          <ModernListSection title="Departments" items={appSettings.departments || []} onAddItem={handleAddItem('departments')} onRemoveItem={handleRemoveItem('departments')} isLoading={isLoading} icon="🏢" />
+          <ModernListSection title="Positions" items={appSettings.positions || []} onAddItem={handleAddItem('positions')} onRemoveItem={handleRemoveItem('positions')} isLoading={isLoading} icon="💼" />
+          <ModernListSection title="Employee Types" items={appSettings.employeeTypes || []} onAddItem={handleAddItem('employeeTypes')} onRemoveItem={handleRemoveItem('employeeTypes')} isLoading={isLoading} icon="👥" />
+          <ModernListSection title="Employee Statuses" items={appSettings.statuses || []} onAddItem={handleAddItem('statuses')} onRemoveItem={handleRemoveItem('statuses')} isLoading={isLoading} icon="📊" />
           <div className="lg:col-span-2">
-            <ModernListSection title="Document Types" items={appSettings.documentTypes} onAddItem={handleAddItem('documentTypes')} onRemoveItem={handleRemoveItem('documentTypes')} isLoading={isLoading} icon="📄" />
+            <ModernListSection title="Document Types" items={appSettings.documentTypes || []} onAddItem={handleAddItem('documentTypes')} onRemoveItem={handleRemoveItem('documentTypes')} isLoading={isLoading} icon="📄" />
           </div>
         </div>
       )}
