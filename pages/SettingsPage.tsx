@@ -184,10 +184,12 @@ const SettingsPage: React.FC = () => {
 
   const handleUpdateList = async (listName: keyof Pick<AppSettings, 'departments' | 'positions' | 'employeeTypes' | 'statuses' | 'documentTypes'>, items: string[]) => {
     if (!appSettings) return;
+    console.log(`Updating ${listName} with items:`, items);
     try {
       const updatedSettings = { ...appSettings, [listName]: items };
       await updateAppSettings(updatedSettings); 
       setAppSettings(updatedSettings); 
+      console.log(`Successfully updated ${listName}`);
     } catch (error) {
       console.error(`Error updating ${listName}:`, error);
       alert(`Failed to update ${listName}. ${error instanceof Error ? error.message : String(error)}`);
@@ -196,16 +198,32 @@ const SettingsPage: React.FC = () => {
   };
 
   const handleAddItem = useCallback((listName: keyof Pick<AppSettings, 'departments' | 'positions' | 'employeeTypes' | 'statuses' | 'documentTypes'>) => async (item: string) => {
-    if (!appSettings || !appSettings[listName]) return;
+    if (!appSettings) {
+      console.error('No app settings available');
+      return;
+    }
+    if (!appSettings[listName]) {
+      console.error(`List ${listName} not found in app settings`);
+      return;
+    }
+    console.log(`Adding item "${item}" to ${listName}`);
     const newList = [...appSettings[listName], item];
     await handleUpdateList(listName, newList);
-  }, [appSettings]);
+  }, [appSettings, handleUpdateList]);
 
   const handleRemoveItem = useCallback((listName: keyof Pick<AppSettings, 'departments' | 'positions' | 'employeeTypes' | 'statuses' | 'documentTypes'>) => async (item: string) => {
-    if (!appSettings || !appSettings[listName]) return;
+    if (!appSettings) {
+      console.error('No app settings available');
+      return;
+    }
+    if (!appSettings[listName]) {
+      console.error(`List ${listName} not found in app settings`);
+      return;
+    }
+    console.log(`Removing item "${item}" from ${listName}`);
     const newList = appSettings[listName].filter(i => i !== item);
     await handleUpdateList(listName, newList);
-  }, [appSettings]);
+  }, [appSettings, handleUpdateList]);
   
   const handleCompanyInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setCompanyInfo({...companyInfo, [e.target.name]: e.target.value });

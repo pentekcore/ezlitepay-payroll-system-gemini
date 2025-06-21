@@ -220,6 +220,18 @@ export const getAppSettings = async (): Promise<AppSettings> => {
 export const updateAppSettings = async (settingsData: AppSettings): Promise<AppSettings> => {
   console.log("Supabase: Updating app settings", settingsData);
   try {
+    // First check if the record exists
+    const { data: existingData, error: fetchError } = await supabase
+      .from('app_settings')
+      .select('*')
+      .eq('key', 'main_config')
+      .single();
+
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      throw fetchError;
+    }
+
+    // Use upsert to handle both insert and update cases
     const { error } = await supabase
       .from('app_settings')
       .upsert({ 
@@ -229,9 +241,12 @@ export const updateAppSettings = async (settingsData: AppSettings): Promise<AppS
         label: 'Main Application Configuration',
         is_active: true,
         sort_order: 1
+      }, {
+        onConflict: 'key'
       });
 
     if (error) throw error;
+    console.log("Supabase: App settings updated successfully");
     return settingsData;
   } catch (error) {
     console.error("Error updating app settings in Supabase:", error);
